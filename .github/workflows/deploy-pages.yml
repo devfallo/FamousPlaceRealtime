@@ -7,8 +7,8 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
+  pages: write      # Pages 사이트 생성/설정에 필요한 권한
+  id-token: write   # OIDC 인증에 필요한 권한
 
 jobs:
   build:
