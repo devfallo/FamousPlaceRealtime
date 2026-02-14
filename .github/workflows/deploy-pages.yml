@@ -17,8 +17,12 @@ jobs:
       - uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
+        # NOTE:
+        # `enablement: true` forces an API call to create/enable a Pages site.
+        # In many repos this fails for GITHUB_TOKEN with
+        # "Resource not accessible by integration".
+        # Keep repository Pages enabled in Settings once, and let deploy-pages
+        # handle deployments only.
       - uses: actions/setup-node@v4
         with:
           node-version: 20
