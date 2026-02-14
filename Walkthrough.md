@@ -66,3 +66,55 @@
 
 ## 실제 웹페이지 주소
 - https://devfallo.github.io/FamousPlaceRealtime/
+
+---
+
+## 사용자 설정 가이드 (GitHub Pages `configure-pages` Not Found 에러 해결)
+아래 에러는 저장소에 **GitHub Pages 사이트가 아직 활성화되지 않았을 때** 자주 발생합니다.
+
+```text
+Get Pages site failed. ... Error: Not Found
+HttpError: Not Found - https://docs.github.com/rest/pages/pages#get-a-apiname-pages-site
+```
+
+### 1) GitHub 저장소에서 Pages를 먼저 1회 활성화
+1. GitHub 저장소 접속
+2. `Settings` → `Pages` 이동
+3. `Build and deployment` 항목에서
+   - **Source**를 `GitHub Actions`로 선택
+4. 저장
+
+> 이 과정을 하면 저장소에 Pages site가 생성되어, 워크플로우의 `configure-pages` 단계가 `Not Found`로 실패하지 않습니다.
+
+### 2) Repository Actions 권한 확인
+`Settings` → `Actions` → `General`에서 다음 확인:
+- `Actions permissions`: `Allow all actions and reusable workflows` (또는 필요한 액션 허용 상태)
+- `Workflow permissions`: **Read and write permissions**
+- `Allow GitHub Actions to create and approve pull requests`는 선택 사항
+
+### 3) 브랜치/리포지토리 조건 확인
+- 워크플로우 트리거 브랜치가 실제 기본 브랜치와 일치하는지 확인 (`main`)
+- 포크 저장소에서 실행 중이면 조직 정책/권한으로 인해 Pages enable API가 막힐 수 있으므로 본 저장소에서 실행 권장
+- 조직(Organization) 저장소라면 Org 정책에서 GitHub Pages 사용 허용 여부 확인
+
+### 4) 워크플로우 설정 반영 내용
+본 저장소 워크플로우는 `configure-pages` 단계에서 아래처럼 `enablement: true`를 명시해, Pages site가 없을 경우 자동 생성/활성화를 시도하도록 변경했습니다.
+
+```yaml
+- name: Setup Pages
+  uses: actions/configure-pages@v5
+  with:
+    enablement: true
+```
+
+### 5) 재실행 방법
+1. 위 설정 저장 후 `Actions` 탭 이동
+2. `Deploy Pages` 워크플로우 선택
+3. `Run workflow` 수동 실행 또는 `main` 브랜치에 커밋 푸시
+4. 성공 시 `deploy-pages` 단계에서 배포 URL이 출력됨
+
+### 6) 계속 실패할 때 점검 포인트
+- 저장소가 Private인데 요금제/정책상 Pages 제한이 있는지
+- Enterprise/Organization 정책에서 Pages 또는 Actions 권한이 제한되어 있는지
+- 최초 1회는 웹 UI에서 Pages 활성화 후 다시 실행했는지
+
