@@ -32,11 +32,17 @@
 2. 프론트엔드 필터 UI(고속도로/국도/관광지) 도입
 3. 샘플 데이터 구조를 실데이터 이관 가능한 스키마로 정의
    - `id, name, lat, lng, source, streamType, streamUrl/videoId`
+4. ITS 연동 모듈(`src/api/itsCctv.js`) 추가
+   - `VITE_PROXY_BASE_URL` + `VITE_ITS_CCTV_PATH`를 이용해 프록시 호출
+   - 응답 스키마가 달라도 배열 payload를 탐색해 정규화
+   - 좌표/스트림 URL 유효성 검증 후 지도 마커 데이터로 변환
+5. 로딩/성공/실패 상태를 상단 툴바 메시지로 노출
+   - API 실패 또는 미설정 시 샘플 데이터로 자동 폴백
 
 ### 다음 작업
-- ITS 실 API 키 발급 후 연계 fetch 모듈 추가
 - MarkerClusterer 적용(대량 마커 성능 대응)
 - 프록시에 API 키 시크릿 바인딩 및 rate limit 도입
+- 국도/고속도로 분류 정확도 향상을 위한 ITS 필드 매핑 고도화
 
 ---
 
@@ -57,3 +63,6 @@
 - [ ] ITS/OpenAPI 키 신청 및 사용량 제한 확인
 - [ ] Worker 배포 URL을 `VITE_PROXY_BASE_URL`로 연결
 - [ ] GitHub Actions Pages 배포 확인
+
+## 실제 웹페이지 주소
+- https://devfallo.github.io/FamousPlaceRealtime/

@@ -32,6 +32,27 @@ main,
   font-size: 1rem;
 }
 
+
+.load-message {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+}
+
+.load-message.loading {
+  color: #0f766e;
+}
+
+.load-message.success {
+  color: #166534;
+}
+
+.load-message.warning {
+  color: #92400e;
+}
+
+.load-message.error {
+  color: #b91c1c;
+}
 .filter-wrap {
   display: flex;
   gap: 0.5rem;

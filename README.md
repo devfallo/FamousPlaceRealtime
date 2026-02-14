@@ -15,7 +15,8 @@ npm run dev
 
 ```bash
 VITE_KAKAO_MAP_KEY=YOUR_KAKAO_JAVASCRIPT_KEY
-VITE_PROXY_BASE_URL=https://your-worker.your-subdomain.workers.dev
+VITE_PROXY_BASE_URL=https://your-worker.your-subdomain.workers.dev/api/its
+VITE_ITS_CCTV_PATH=/api/cctv/list
 ```
 
 ## 아키텍처 요약
@@ -25,3 +26,6 @@ VITE_PROXY_BASE_URL=https://your-worker.your-subdomain.workers.dev
 - 비디오: HLS.js + YouTube iframe
 - 프록시: Cloudflare Worker (CORS/HTTPS 우회)
 - 배포: GitHub Pages + GitHub Actions
+
+
+> `VITE_PROXY_BASE_URL` 또는 ITS 키가 없으면 앱은 자동으로 샘플 CCTV 데이터를 표시합니다.
