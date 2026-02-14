@@ -1,0 +1,101 @@
+:root {
+  font-family: Pretendard, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #111827;
+  background: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body,
+main,
+#root {
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.toolbar {
+  position: absolute;
+  z-index: 2;
+  top: 1rem;
+  left: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgb(255 255 255 / 90%);
+  box-shadow: 0 10px 30px rgb(15 23 42 / 20%);
+}
+
+.toolbar h1 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+}
+
+.filter-wrap {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-wrap button {
+  border: 1px solid #94a3b8;
+  border-radius: 999px;
+  background: transparent;
+  padding: 0.4rem 0.9rem;
+  cursor: pointer;
+}
+
+.filter-wrap button.active {
+  border-color: #2563eb;
+  color: #2563eb;
+  background: #dbeafe;
+}
+
+.map-canvas,
+.map-fallback {
+  width: 100%;
+  height: 100%;
+}
+
+.map-fallback {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  background: rgb(15 23 42 / 55%);
+  display: grid;
+  place-items: center;
+}
+
+.modal {
+  width: min(90vw, 920px);
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.modal-header {
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-content {
+  aspect-ratio: 16 / 9;
+  background: #020617;
+}
+
+.modal-content video,
+.modal-content iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
