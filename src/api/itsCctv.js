@@ -6,13 +6,25 @@ const toNumber = (value) => {
 };
 
 const classifySource = (item) => {
-  const roadType = String(item.roadType ?? item.roadtype ?? '').toLowerCase();
-  if (roadType.includes('highway') || roadType.includes('고속')) {
+  const roadType = String(item.roadType ?? item.roadtype ?? item.roadName ?? item.roadname ?? '').toLowerCase();
+  const routeNo = String(item.routeNo ?? item.routeNum ?? item.routecode ?? item.routeName ?? '');
+  const cctvName = String(item.cctvname ?? item.cctvName ?? item.name ?? '').toLowerCase();
+
+  if (
+    roadType.includes('highway') ||
+    roadType.includes('express') ||
+    roadType.includes('고속') ||
+    cctvName.includes('고속')
+  ) {
     return 'highway';
   }
 
-  const routeNo = String(item.routeNo ?? item.routeNum ?? item.routecode ?? '');
-  if (/^\d+$/.test(routeNo) && Number(routeNo) < 100) {
+  if (
+    roadType.includes('national') ||
+    roadType.includes('국도') ||
+    cctvName.includes('국도') ||
+    (/^\d+$/.test(routeNo) && Number(routeNo) < 100)
+  ) {
     return 'national';
   }
 
@@ -60,7 +72,11 @@ export async function fetchItsCctvList() {
   const endpoint = new URL(proxyBaseUrl);
   endpoint.searchParams.set('path', requestedPath);
 
-  const response = await fetch(endpoint.toString());
+  const response = await fetch(endpoint.toString(), {
+    headers: {
+      Accept: 'application/json'
+    }
+  });
 
   if (!response.ok) {
     throw new Error(`ITS API request failed with status ${response.status}`);
@@ -75,7 +91,11 @@ export async function fetchItsCctvList() {
       const lng = toNumber(item.coordX ?? item.coordx ?? item.x);
       const streamUrl = item.cctvurl ?? item.streamUrl ?? item.url;
 
-      if (!lat || !lng || !streamUrl) {
+      if (!lat || !lng || !streamUrl || typeof streamUrl !== 'string') {
+        return null;
+      }
+
+      if (!/^https?:\/\//i.test(streamUrl)) {
         return null;
       }
 

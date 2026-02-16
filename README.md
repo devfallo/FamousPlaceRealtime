@@ -19,6 +19,15 @@ VITE_PROXY_BASE_URL=https://your-worker.your-subdomain.workers.dev/api/its
 VITE_ITS_CCTV_PATH=/api/cctv/list
 ```
 
+Cloudflare Worker에는 아래 시크릿/환경 변수를 설정하세요.
+
+```bash
+ITS_BASE_URL=https://openapi.its.go.kr
+ITS_API_KEY=YOUR_SERVER_SIDE_API_KEY
+RATE_LIMIT_MAX=120
+RATE_LIMIT_WINDOW_MS=60000
+```
+
 ## 아키텍처 요약
 
 - 프론트엔드: React + Vite
