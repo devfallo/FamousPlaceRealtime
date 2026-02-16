@@ -4,6 +4,7 @@ function KakaoMap({ cctvList, onMarkerClick }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markersRef = useRef([]);
+  const clustererRef = useRef(null);
   const [mapStatus, setMapStatus] = useState('idle');
 
   const fallbackMessage = useMemo(() => {
@@ -49,7 +50,9 @@ function KakaoMap({ cctvList, onMarkerClick }) {
       }
 
       markersRef.current.forEach((marker) => marker.setMap(null));
-      markersRef.current = cctvList.map((item) => {
+      clustererRef.current?.clear();
+
+      const nextMarkers = cctvList.map((item) => {
         const marker = new window.kakao.maps.Marker({
           map,
           position: new window.kakao.maps.LatLng(item.lat, item.lng)
@@ -58,6 +61,25 @@ function KakaoMap({ cctvList, onMarkerClick }) {
         window.kakao.maps.event.addListener(marker, 'click', () => onMarkerClick(item));
         return marker;
       });
+      markersRef.current = nextMarkers;
+
+      if (window.kakao.maps.MarkerClusterer) {
+        if (!clustererRef.current) {
+          clustererRef.current = new window.kakao.maps.MarkerClusterer({
+            map,
+            averageCenter: true,
+            minLevel: 9
+          });
+        }
+
+        clustererRef.current.addMarkers(nextMarkers);
+      }
+
+      if (nextMarkers.length > 0) {
+        const bounds = new window.kakao.maps.LatLngBounds();
+        nextMarkers.forEach((marker) => bounds.extend(marker.getPosition()));
+        map.setBounds(bounds);
+      }
 
       setMapStatus('ready');
     };
@@ -74,7 +96,7 @@ function KakaoMap({ cctvList, onMarkerClick }) {
     const script = document.createElement('script');
     script.id = scriptId;
     script.async = true;
-    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${appkey}`;
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&libraries=clusterer&appkey=${appkey}`;
     script.onload = () => {
       if (!window.kakao?.maps?.load) {
         setMapStatus('fallback');
@@ -91,6 +113,7 @@ function KakaoMap({ cctvList, onMarkerClick }) {
     return () => {
       markersRef.current.forEach((marker) => marker.setMap(null));
       markersRef.current = [];
+      clustererRef.current?.clear();
     };
   }, [cctvList, onMarkerClick]);
 

@@ -24,7 +24,7 @@
 
 ---
 
-## Phase 2 — 핵심 데이터(교통 CCTV) 및 프록시 구축 (진행 중)
+## Phase 2 — 핵심 데이터(교통 CCTV) 및 프록시 구축 (완료)
 ### 구현 내용
 1. Cloudflare Worker 프록시 템플릿 작성
    - `/api/its?path=...` 형태로 원천 API 호출 위임
@@ -39,10 +39,10 @@
 5. 로딩/성공/실패 상태를 상단 툴바 메시지로 노출
    - API 실패 또는 미설정 시 샘플 데이터로 자동 폴백
 
-### 다음 작업
-- MarkerClusterer 적용(대량 마커 성능 대응)
-- 프록시에 API 키 시크릿 바인딩 및 rate limit 도입
-- 국도/고속도로 분류 정확도 향상을 위한 ITS 필드 매핑 고도화
+### Phase 2 마무리 반영
+- MarkerClusterer 적용으로 대량 마커 렌더링 성능 개선
+- 프록시에 API 키 시크릿 바인딩 + 요청 rate limit 추가
+- 국도/고속도로 분류 규칙 고도화(roadType/routeNo/cctvname 다중 매핑)
 
 ---
 
@@ -117,4 +117,3 @@ HttpError: Not Found - https://docs.github.com/rest/pages/pages#get-a-apiname-pa
 - 저장소가 Private인데 요금제/정책상 Pages 제한이 있는지
 - Enterprise/Organization 정책에서 Pages 또는 Actions 권한이 제한되어 있는지
 - 최초 1회는 웹 UI에서 Pages 활성화 후 다시 실행했는지
-

@@ -83,7 +83,7 @@ function App() {
   return (
     <main>
       <section className="toolbar">
-        <h1>전국 CCTV 통합 뷰어 (Phase 2 진행중)</h1>
+        <h1>전국 CCTV 통합 뷰어 (Phase 2)</h1>
         <div className="filter-wrap">
           {filters.map((filter) => (
             <button
